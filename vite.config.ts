@@ -11,7 +11,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
-    emptyOutDir: true,
+    outDir: "docs", // 🟢 บอกให้ build ไปไว้ใน docs แทน dist
   },
 });
