@@ -766,41 +766,23 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path2 from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { fileURLToPath } from "url";
 var __dirname = path2.dirname(fileURLToPath(import.meta.url));
 var vite_config_default = defineConfig({
   // 👇 สำคัญมากสำหรับ GitHub Pages
   base: "/AlumniGallery/",
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
-      await import("@replit/vite-plugin-cartographer").then(
-        (m) => m.cartographer()
-      ),
-      await import("@replit/vite-plugin-dev-banner").then(
-        (m) => m.devBanner()
-      )
-    ] : []
-  ],
+  plugins: [react()],
+  root: path2.resolve(__dirname, "client"),
+  build: {
+    // 👇 ต้องให้ไฟล์ index.html อยู่ตรงนี้
+    outDir: path2.resolve(__dirname, "dist"),
+    emptyOutDir: true
+  },
   resolve: {
     alias: {
       "@": path2.resolve(__dirname, "client", "src"),
       "@shared": path2.resolve(__dirname, "shared"),
       "@assets": path2.resolve(__dirname, "attached_assets")
-    }
-  },
-  root: path2.resolve(__dirname, "client"),
-  build: {
-    // ✅ แก้ให้ build ลงใน dist ตรง ๆ
-    outDir: path2.resolve(__dirname, "dist"),
-    emptyOutDir: true
-  },
-  server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"]
     }
   }
 });
