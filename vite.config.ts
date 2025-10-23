@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  base: "/AlumniGallery/", // 👈 สำคัญมาก — ทำให้ path เป็นแบบ relative (ไม่ขึ้นต้นด้วย /)
+  base: "./", // 👈 ต้องเป็นชื่อ repo
   plugins: [react()],
   resolve: {
     alias: {
@@ -11,6 +11,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "docs", // 🟢 บอกให้ build ไปไว้ใน docs แทน dist
+    outDir: "docs", // 🟢 build ลง docs
+    emptyOutDir: true, // 🧹 เคลียร์ของเก่าก่อน build ทุกครั้ง
   },
 });
