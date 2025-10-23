@@ -4,7 +4,7 @@ import { Users, Image as ImageIcon, Clock, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import heroImage from "@assets/generated_images/Image_bus.jpg";
+import heroImage from "/images/Image_bus.jpg";
 import type { Member, Activity, Gallery } from "@shared/schema";
 
 export default function HomePage() {
