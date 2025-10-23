@@ -102,7 +102,7 @@ export default function MembersPage() {
                 <div className="relative w-full aspect-square bg-gray-100 flex items-center justify-center">
                   {m.profileImage ? (
                     <img
-                      src={`${import.meta.env.BASE_URL}${m.profileImage.replace(/^\//, "")}`}
+                      src={`${import.meta.env.BASE_URL}${m.profileImage}`}
                       alt={m.name}
                       className="w-full h-full object-cover"
                       loading="lazy"

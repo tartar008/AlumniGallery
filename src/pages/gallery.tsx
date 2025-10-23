@@ -25,12 +25,12 @@ export default function GalleryPage() {
     .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
 }, []);
 
-
+  const base = import.meta.env.BASE_URL;
   // ✅ สร้างข้อมูลจำลองสำหรับแต่ละภาพ
   const galleries = useMemo(() => {
     return images.map((file, index) => ({
       id: index + 1,
-      imageUrl: `${import.meta.env.BASE_URL}images/gallery/${file}`,
+      imageUrl: `${base}images/gallery/${file}`,
       title: `กิจกรรมที่ ${index + 1}`,
       category: index < 50 ? "กิจกรรมชมรม" : "งานนิทรรศการ",
       cohort: "ICT 18",
