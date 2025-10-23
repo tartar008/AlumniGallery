@@ -104,21 +104,21 @@ export default function GalleryPage() {
             {filteredGalleries.map((gallery) => (
               <div
                 key={gallery.id}
-                className="mb-4 break-inside-avoid group cursor-pointer"
+                className="mb-4 break-inside-avoid group cursor-pointer overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
                 onClick={() => setLightboxImage(gallery)}
                 data-testid={`image-gallery-${gallery.id}`}
               >
-                <div className="relative overflow-hidden rounded-md hover-elevate active-elevate-2">
+                <div className="relative w-full overflow-hidden rounded-xl">
                   <img
                     src={gallery.imageUrl}
                     alt={gallery.title || "Gallery image"}
-                    className="w-full h-auto"
+                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
                       {gallery.title && (
-                        <p className="text-white font-semibold text-sm mb-1">
+                        <p className="text-white font-medium text-sm mb-1 truncate">
                           {gallery.title}
                         </p>
                       )}
@@ -140,6 +140,7 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
+
         )}
 
         {/* Lightbox Dialog */}

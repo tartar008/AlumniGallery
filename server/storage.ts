@@ -133,6 +133,18 @@ export class MemStorage implements IStorage {
       "Photo_187.JPG", "Photo_188.JPG", "Photo_189.JPG", "Photo_190.JPG", "Photo_191.jpg"
     ];
 
+    for (const m of sampleMembers) {
+      try {
+        await this.createMember({
+          ...m,
+          profileImage: m.profileImage,
+        });
+        console.log("✅ Inserted:", m.name);
+      } catch (err) {
+        console.error("❌ Insert failed:", m.name, err);
+      }
+    }
+
 
     for (const filename of galleryImages) {
       await this.createGallery({
