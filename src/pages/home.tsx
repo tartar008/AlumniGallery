@@ -8,19 +8,37 @@ import heroImage from "/images/Image_bus.jpg";
 import type { Member, Activity, Gallery } from "@/lib/schema";
 
 export default function HomePage() {
+  const base = import.meta.env.BASE_URL;
+
+  // ✅ โหลดข้อมูลจาก JSON แทน API
   const { data: members = [] } = useQuery<Member[]>({
-    queryKey: ["/api/members"],
+    queryKey: ["members"],
+    queryFn: async () => {
+      const res = await fetch(`${base}data/members.json`);
+      if (!res.ok) throw new Error("Failed to load members.json");
+      return res.json();
+    },
   });
 
   const { data: activities = [] } = useQuery<Activity[]>({
-    queryKey: ["/api/activities"],
+    queryKey: ["activities"],
+    queryFn: async () => {
+      const res = await fetch(`${base}data/activities.json`);
+      if (!res.ok) throw new Error("Failed to load activities.json");
+      return res.json();
+    },
   });
 
   const { data: galleries = [] } = useQuery<Gallery[]>({
-    queryKey: ["/api/galleries"],
+    queryKey: ["galleries"],
+    queryFn: async () => {
+      const res = await fetch(`${base}data/gallery.json`);
+      if (!res.ok) throw new Error("Failed to load gallery.json");
+      return res.json();
+    },
   });
 
-  // Get unique cohorts and count members
+  // ✅ สถิติ
   const cohortStats = members.reduce((acc, member) => {
     acc[member.cohort] = (acc[member.cohort] || 0) + 1;
     return acc;
@@ -36,47 +54,27 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
+      {/* ✅ Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image with Dark Wash */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={heroImage}
-            alt="Campus community"
-            className="w-full h-full object-cover"
-          />
+          <img src={`${base}images/Image_bus.jpg`} alt="Campus" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/40" />
         </div>
 
-        {/* Hero Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6">
-            ภาพรวมทุกรุ่น
-          </h1>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6">ภาพรวมทุกรุ่น</h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 font-mono">
             {totalCohorts}+ รุ่น • {totalMembers}+ สมาชิก • {totalPhotos}+ ความทรงจำ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/members">
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
-                data-testid="button-explore-members"
-              >
-                <Users className="w-5 h-5 mr-2" />
-                สำรวจสมาชิก
+              <Button size="lg" variant="outline" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30">
+                <Users className="w-5 h-5 mr-2" /> สำรวจสมาชิก
               </Button>
             </Link>
             <Link href="/gallery">
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
-                data-testid="button-view-gallery"
-              >
-                <ImageIcon className="w-5 h-5 mr-2" />
-                ดูแกลเลอรี
+              <Button size="lg" variant="outline" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30">
+                <ImageIcon className="w-5 h-5 mr-2" /> ดูแกลเลอรี
               </Button>
             </Link>
           </div>

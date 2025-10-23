@@ -102,7 +102,7 @@ export default function MembersPage() {
                 <div className="relative w-full aspect-square bg-gray-100 flex items-center justify-center">
                   {m.profileImage ? (
                     <img
-                      src={m.profileImage}
+                      src={`${import.meta.env.BASE_URL}${m.profileImage.replace(/^\//, "")}`}
                       alt={m.name}
                       className="w-full h-full object-cover"
                       loading="lazy"
@@ -111,6 +111,7 @@ export default function MembersPage() {
                   ) : (
                     <User className="text-gray-400 w-12 h-12" />
                   )}
+
                 </div>
                 <h3 className="font-semibold">{m.name}</h3>
                 <p className="text-sm text-muted-foreground">{m.nameEn}</p>

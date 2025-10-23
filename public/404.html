@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // ดึง path เดิมที่ผู้ใช้เปิด เช่น /AlumniGallery/gallery
+      const repo = "/AlumniGallery";
+      const redirect = window.location.pathname.replace(repo, "");
+      sessionStorage.redirect = redirect;
+      window.location.replace(repo + "/");
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -19,22 +19,18 @@ export default function GalleryPage() {
 
   // ✅ โหลดไฟล์ JSON จาก public/gallery.json
   useEffect(() => {
-    const base = import.meta.env.BASE_URL; // จะเป็น "/AlumniGallery/"
-    fetch(`${base}data/gallery.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setImages(data))
-      .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
-  }, []);
+  fetch(`${import.meta.env.BASE_URL}data/gallery.json`)
+    .then((res) => res.json())
+    .then((data) => setImages(data))
+    .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
+}, []);
 
 
   // ✅ สร้างข้อมูลจำลองสำหรับแต่ละภาพ
   const galleries = useMemo(() => {
     return images.map((file, index) => ({
       id: index + 1,
-      imageUrl: `/images/gallery/${file}`,
+      imageUrl: `${import.meta.env.BASE_URL}images/gallery/${file}`,
       title: `กิจกรรมที่ ${index + 1}`,
       category: index < 50 ? "กิจกรรมชมรม" : "งานนิทรรศการ",
       cohort: "ICT 18",

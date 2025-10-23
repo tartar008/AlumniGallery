@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-export default defineConfig({
-  base: "/AlumniGallery/", // 👈 ต้องเป็นชื่อ repo
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/AlumniGallery/" : "/",
   plugins: [react()],
   resolve: {
     alias: {
@@ -11,7 +11,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "docs", // 🟢 build ลง docs
-    emptyOutDir: true, // 🧹 เคลียร์ของเก่าก่อน build ทุกครั้ง
+    outDir: "docs",
   },
-});
+}));
