@@ -6,16 +6,21 @@ import { z } from "zod";
 // Members table - สมาชิกแต่ละรุ่น
 export const members = pgTable("members", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+
+  // ✅ เพิ่ม studentId
+  studentId: varchar("student_id", { length: 20 }).notNull(), // เช่น "6510210014"
+
   name: text("name").notNull(),
   nameEn: text("name_en"),
-  cohort: text("cohort").notNull(), // รุ่นที่เข้า เช่น "รุ่น 65", "Class of 2022"
-  department: text("department").notNull(), // สาขา
+  cohort: text("cohort").notNull(), // เช่น "ICT 18"
+  department: text("department").notNull(),
   bio: text("bio"),
   profileImage: text("profile_image"),
-  position: text("position"), // ตำแหน่ง เช่น "นายก", "หัวหน้าฝ่าย"
-  contactInfo: text("contact_info"), // ข้อมูลติดต่อ
-  year: integer("year").notNull(), // ปี (เป็นตัวเลข สำหรับ sorting)
+  position: text("position"),
+  contactInfo: text("contact_info"),
+  year: integer("year").notNull(),
 });
+
 
 // Activities/Events - กิจกรรมและเหตุการณ์
 export const activities = pgTable("activities", {
