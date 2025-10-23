@@ -19,11 +19,16 @@ export default function GalleryPage() {
 
   // ✅ โหลดไฟล์ JSON จาก public/gallery.json
   useEffect(() => {
-    fetch("./data/gallery.json")
-      .then((res) => res.json())
+    const base = import.meta.env.BASE_URL; // จะเป็น "/AlumniGallery/"
+    fetch(`${base}data/gallery.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => setImages(data))
       .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
   }, []);
+
 
   // ✅ สร้างข้อมูลจำลองสำหรับแต่ละภาพ
   const galleries = useMemo(() => {
