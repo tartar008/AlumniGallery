@@ -770,6 +770,7 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { fileURLToPath } from "url";
 var __dirname = path2.dirname(fileURLToPath(import.meta.url));
 var vite_config_default = defineConfig({
+  // 👇 สำคัญมากสำหรับ GitHub Pages
   base: "/AlumniGallery/",
   plugins: [
     react(),
@@ -792,7 +793,8 @@ var vite_config_default = defineConfig({
   },
   root: path2.resolve(__dirname, "client"),
   build: {
-    outDir: path2.resolve(__dirname, "dist/public"),
+    // ✅ แก้ให้ build ลงใน dist ตรง ๆ
+    outDir: path2.resolve(__dirname, "dist"),
     emptyOutDir: true
   },
   server: {
