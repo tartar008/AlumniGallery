@@ -1,0 +1,190 @@
+import { useEffect, useState, useMemo } from "react";
+import { Image as ImageIcon, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+export default function GalleryPage() {
+  const [images, setImages] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCohort, setSelectedCohort] = useState<string>("all");
+  const [lightboxImage, setLightboxImage] = useState<any | null>(null);
+
+  // ✅ โหลดไฟล์ JSON จาก public/gallery.json
+  useEffect(() => {
+    fetch("/data/gallery.json")
+      .then((res) => res.json())
+      .then((data) => setImages(data))
+      .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
+  }, []);
+
+  // ✅ สร้างข้อมูลจำลองสำหรับแต่ละภาพ
+  const galleries = useMemo(() => {
+    return images.map((file, index) => ({
+      id: index + 1,
+      imageUrl: `/images/gallery/${file}`,
+      title: `กิจกรรมที่ ${index + 1}`,
+      category: index < 50 ? "กิจกรรมชมรม" : "งานนิทรรศการ",
+      cohort: "ICT 18",
+      description: "ภาพกิจกรรมของนักศึกษาสาขา ICT รุ่นที่ 18",
+      eventDate: new Date(2025, 0, index + 1).toISOString(),
+    }));
+  }, [images]);
+
+  // ✅ unique filters
+  const categories = useMemo(
+    () => Array.from(new Set(galleries.map((g) => g.category))),
+    [galleries]
+  );
+  const cohorts = useMemo(
+    () => Array.from(new Set(galleries.map((g) => g.cohort))).sort((a, b) => b.localeCompare(a)),
+    [galleries]
+  );
+
+  // ✅ filter
+  const filteredGalleries = galleries.filter((gallery) => {
+    const matchesCategory =
+      selectedCategory === "all" || gallery.category === selectedCategory;
+    const matchesCohort =
+      selectedCohort === "all" || gallery.cohort === selectedCohort;
+    return matchesCategory && matchesCohort;
+  });
+
+  return (
+    <div className="min-h-screen py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+            แกลเลอรีภาพ
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            ภาพกิจกรรมและความทรงจำทั้งหมดของนักศึกษา
+          </p>
+        </div>
+
+        {/* Filters */}
+        <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm py-4 mb-8 border-b">
+          <div className="flex flex-wrap gap-4">
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="เลือกหมวดหมู่" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">ทุกหมวดหมู่</SelectItem>
+                {categories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={selectedCohort} onValueChange={setSelectedCohort}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="เลือกรุ่น" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">ทุกรุ่น</SelectItem>
+                {cohorts.map((cohort) => (
+                  <SelectItem key={cohort} value={cohort}>
+                    {cohort}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <p className="text-sm text-muted-foreground mt-4">
+            แสดง {filteredGalleries.length} จาก {galleries.length} ภาพ
+          </p>
+        </div>
+
+        {/* ✅ Gallery Grid */}
+        {filteredGalleries.length === 0 ? (
+          <div className="text-center py-16">
+            <ImageIcon className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">ไม่พบภาพ</h3>
+            <p className="text-muted-foreground">ลองเปลี่ยนตัวกรอง</p>
+          </div>
+        ) : (
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+            {filteredGalleries.map((gallery) => (
+              <div
+                key={gallery.id}
+                className="mb-4 break-inside-avoid group cursor-pointer overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                onClick={() => setLightboxImage(gallery)}
+              >
+                <div className="relative w-full overflow-hidden rounded-xl">
+                  <img
+                    src={gallery.imageUrl}
+                    alt={gallery.title}
+                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <p className="text-white font-medium text-sm mb-1 truncate">
+                        {gallery.title}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        <Badge variant="secondary" className="text-xs">
+                          {gallery.category}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs text-white border-white">
+                          {gallery.cohort}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ✅ Lightbox Dialog */}
+        <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
+          <DialogContent className="max-w-4xl p-0">
+            {lightboxImage && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-2 right-2 z-50 bg-background/80 backdrop-blur-sm"
+                  onClick={() => setLightboxImage(null)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+                <img
+                  src={lightboxImage.imageUrl}
+                  alt={lightboxImage.title}
+                  className="w-full h-auto max-h-[80vh] object-contain"
+                />
+                <div className="p-6">
+                  <DialogHeader>
+                    <DialogTitle>{lightboxImage.title}</DialogTitle>
+                  </DialogHeader>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {lightboxImage.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    <Badge variant="secondary">{lightboxImage.category}</Badge>
+                    <Badge variant="outline">{lightboxImage.cohort}</Badge>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
+}
