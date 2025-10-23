@@ -21,7 +21,7 @@ export default function MembersPage() {
 
   // ✅ โหลดข้อมูลจาก public/members.json
   useEffect(() => {
-    fetch("/data/members.json")
+    fetch("./data/members.json")
       .then((res) => res.json())
       .then((data) => setMembers(data))
       .catch((err) => console.error("โหลด members.json ไม่ได้:", err))

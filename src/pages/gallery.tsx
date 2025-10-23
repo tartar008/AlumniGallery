@@ -19,7 +19,7 @@ export default function GalleryPage() {
 
   // ✅ โหลดไฟล์ JSON จาก public/gallery.json
   useEffect(() => {
-    fetch("/data/gallery.json")
+    fetch("./data/gallery.json")
       .then((res) => res.json())
       .then((data) => setImages(data))
       .catch((err) => console.error("โหลด gallery.json ไม่ได้:", err));
