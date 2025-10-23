@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  base: "./", // 👈 สำคัญที่สุด — ใช้ path relative
+  base: "/AlumniGallery/", // 👈 สำคัญมาก — ทำให้ path เป็นแบบ relative (ไม่ขึ้นต้นด้วย /)
   plugins: [react()],
   resolve: {
     alias: {
