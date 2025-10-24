@@ -5,14 +5,11 @@
   <meta charset="utf-8" />
   <title>Redirecting...</title>
   <script>
-    // ✅ กำหนดปลายทางให้เป็นหน้า root GitHub.io
-    const root = "https://tartar008.github.io/";
-
-    // optional: ถ้าอยาก log ให้เห็นตอนเทส
-    console.log("Redirecting to root:", root);
-
-    // ✅ redirect ออกไป root โดยตรง
-    window.location.replace(root);
+    // redirect ทั้งหมดจาก AlumniGallery → root
+    const path = window.location.pathname;
+    if (path.startsWith("/AlumniGallery")) {
+      window.location.replace("https://tartar008.github.io/");
+    }
   </script>
 </head>
 
