@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Redirecting...</title>
-    <script>
-      // ดึง path เดิมที่ผู้ใช้เปิด เช่น /AlumniGallery/gallery
-      const repo = "/AlumniGallery";
-      const redirect = window.location.pathname.replace(repo, "");
-      sessionStorage.redirect = redirect;
-      window.location.replace(repo + "/");
-    </script>
-  </head>
-  <body></body>
+<html lang="th">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting...</title>
+  <script>
+    // ✅ กำหนดปลายทางให้เป็นหน้า root GitHub.io
+    const root = "https://tartar008.github.io/";
+
+    // optional: ถ้าอยาก log ให้เห็นตอนเทส
+    console.log("Redirecting to root:", root);
+
+    // ✅ redirect ออกไป root โดยตรง
+    window.location.replace(root);
+  </script>
+</head>
+
+<body>
+  <p>กำลังเปลี่ยนเส้นทาง...</p>
+</body>
+
 </html>
