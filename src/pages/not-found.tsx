@@ -5,11 +5,8 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   useEffect(() => {
-    // ✅ ถ้าอยู่ในหน้า AlumniGallery (เช่น https://tartar008.github.io/AlumniGallery/)
-    // ให้ redirect กลับ https://tartar008.github.io/
-    if (window.location.pathname === "/AlumniGallery/" || window.location.pathname === "/AlumniGallery") {
-      window.location.replace("https://tartar008.github.io/");
-    }
+    // redirect กลับหน้า Home ภายในโปรเจกต์
+    window.location.replace("/AlumniGallery/");
   }, []);
 
   return (
