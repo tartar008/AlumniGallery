@@ -1,20 +1,15 @@
 import { useEffect } from "react";
-import { Link } from "wouter";
+import { useLocation, Link } from "wouter";
 import { Home, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
-  useEffect(() => {
-    const base =
-      import.meta.env.BASE_URL && import.meta.env.BASE_URL !== "/"
-        ? import.meta.env.BASE_URL
-        : "/AlumniGallery/";
+  const [, navigate] = useLocation();
 
-    // ป้องกัน loop ถ้าอยู่หน้า base อยู่แล้ว
-    if (!window.location.pathname.startsWith(base)) {
-      window.location.replace(base);
-    }
-  }, []);
+  useEffect(() => {
+    // ✅ ให้ redirect ไป "/" ทันที เหมือนคลิกปุ่ม <Link href="/" />
+    navigate("/");
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
