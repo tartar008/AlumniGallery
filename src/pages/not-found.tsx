@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   useEffect(() => {
-    // redirect กลับหน้า Home ภายในโปรเจกต์
-    window.location.replace("/AlumniGallery/");
+    const base =
+      import.meta.env.BASE_URL && import.meta.env.BASE_URL !== "/"
+        ? import.meta.env.BASE_URL
+        : "/AlumniGallery/";
+
+    // ป้องกัน loop ถ้าอยู่หน้า base อยู่แล้ว
+    if (!window.location.pathname.startsWith(base)) {
+      window.location.replace(base);
+    }
   }, []);
 
   return (
